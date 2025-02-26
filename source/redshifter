@@ -93,11 +93,17 @@ sub ChkVal{ # Usage: [ACTION] [VALUE]
 	if ($_[0] eq 'raise'){
 		$Temp = $GammasNow + $_[1];
 
-		$Temp <= 25000 or die("Maximum gamma available is 25000");
+		if ($Temp > 25000){
+            $Temp = 25000;
+            print "Cannot raise temperature further, setting to 25000\n";
+        }
 	}elsif ($_[0] eq 'lower'){
-		$Temp = $GammasNow - $_[1];
-
-		$Temp >= 1000 or die("Minimum gamma available is 1000");
+        $Temp = $GammasNow - $_[1];
+	
+	    if ($Temp < 1000){
+            $Temp = 1000;
+           print "Cannot lower temperature further, setting to 1000 \n";
+        }
 	}
 }
 
@@ -118,25 +124,25 @@ while (defined($ARGV[0])){
 		ChkVal('set', $ARGV[0]);
 		GetSetValue('>', $ARGV[0]);
 
-		system("redshift -o -O $ARGV[0]K 1> /dev/null")
+		system("redshift -m randr -o -O $ARGV[0]K 1> /dev/null")
 	}elsif ($ARGV[0] eq 'reset'){
 		GetSetValue('>', '6500');
 
-		system('redshift -o -O 6500K 1> /dev/null')
+		system('redshift -m randr -o -O 6500K 1> /dev/null')
 	}elsif ($ARGV[0] eq 'raise'){
 		shift();
 
 		ChkVal('raise', $ARGV[0]);
 		GetSetValue('>', $Temp);
 
-		system("redshift -o -O ${Temp}K 1> /dev/null")
+		system("redshift -m randr -o -O ${Temp}K 1> /dev/null")
 	}elsif ($ARGV[0] eq 'lower'){
 		shift();
 
 		ChkVal('lower', $ARGV[0]);
 		GetSetValue('>', $Temp);
 
-		system("redshift -o -O ${Temp}K 1> /dev/null")
+		system("redshift -m randr -o -O ${Temp}K 1> /dev/null")
 	}else{
 		die("Incorrect action(s) specified")
 	}
