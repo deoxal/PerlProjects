@@ -92,18 +92,17 @@ sub ChkVal{ # Usage: [ACTION] [VALUE]
 
 	if ($_[0] eq 'raise'){
 		$Temp = $GammasNow + $_[1];
-
 		if ($Temp > 25000){
-            $Temp = 25000;
-            print "Cannot raise temperature further, setting to 25000\n";
-        }
+            		$Temp = 25000;
+            		print "Cannot raise temperature further, setting to 25000\n";
+        	}
 	}elsif ($_[0] eq 'lower'){
-        $Temp = $GammasNow - $_[1];
+       	 	$Temp = $GammasNow - $_[1];
 	
-	    if ($Temp < 1000){
-            $Temp = 1000;
-           print "Cannot lower temperature further, setting to 1000 \n";
-        }
+		if ($Temp < 1000){
+            		$Temp = 1000;
+       	   	 	print "Cannot lower temperature further, setting to 1000\n";
+        	}
 	}
 }
 
